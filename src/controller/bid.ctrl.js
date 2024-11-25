@@ -11,7 +11,8 @@ const placeBid = async (req, res) => {
     }
 
     const updatedItem = await biddingService.placeBid(itemId, userId, bidAmount);
-    res.status(200).json(updatedItem);
+    console.log(updatedItem);
+    res.send(updatedItem).status(200);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

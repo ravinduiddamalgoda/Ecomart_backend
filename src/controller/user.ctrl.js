@@ -119,7 +119,8 @@ const loginUser = async (req, res) => {
     try {
         const user = await UserService.getUserByEmail(req.body.email);
         const password = req.body.password;
-        if(!user){
+        if(!user){ 
+            console.log('user not found');
             throw new Error('User not found');
         }
         else{
@@ -131,7 +132,7 @@ const loginUser = async (req, res) => {
 
                 user.firstLogin = false;
                 user.lastLogin = new Date().toISOString();
-                await UserService.updateUser(user._id, user.firstName, user.lastName, user.email, user.password, user.role, user.lastLogin, user.firstLogin, user?.otp);
+                await UserService.updateUser(user._id, user.firstName, user.lastName, user.email, user.password, user.role, user.lastLogin, user.firstLogin, '-1');
                 email.send([user.email], 
                     `Welcome to Policy Management System`,
                     `<h2>Welcome to Policy Management System</h2>

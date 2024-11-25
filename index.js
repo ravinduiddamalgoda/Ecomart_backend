@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const multer = require('multer');
 const path = require('path');
+const { setupWebSocket } = require("./src/configs/websocket");
 const app = express();
 
 app.use(express.json());
@@ -44,9 +45,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'src/uploads')));
 
 connectDB(url, {})
     .then(() => {
-        app.listen(port, () => {
+        const server = app.listen(port, () => {
             console.log(`Listening on port ${port}`);
         });
+        setupWebSocket(server);
     })
     .catch((err) => {
         console.error('Connection Error', err);
@@ -56,3 +58,5 @@ app.use('/api/user', require('./src/routes/user.route'));
 app.use('/api/auth' , require('./src/routes/auth.route'));
 app.use('/api/item', require('./src/routes/item.route'));
 app.use('/api/bid', require('./src/routes/bid.route'));
+app.use('/api/order', require('./src/routes/order.router'));
+app.use('/api/chat', require('./src/routes/chat.route'));
